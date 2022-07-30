@@ -1,3 +1,5 @@
+markupsafe==2.0.1 # Not direct but locked due to version issues.
+
 elasticsearch~=7.8
 flasgger~=0.9
 flask~=1.1
