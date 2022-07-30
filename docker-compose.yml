@@ -1,0 +1,55 @@
+version: "3"
+services:
+  api:
+    image: geo-search:latest
+    environment:
+      SERVICE: geo-search
+      ELASTICSEARCH_ENDPOINT: elasticsearch
+      LOGLEVEL: DEBUG
+      INDEX_NAME: geo-search
+      SEED_DATA_LOCATION: ./seed/data.geojson
+    command: [supervisord, -c, /etc/supervisord.conf, -n]
+    volumes:
+        - .:/geo-search
+    networks:
+        - geo_services
+    ports:
+        - '8080:8080'
+    depends_on:
+      - elasticsearch
+    links:
+      - elasticsearch
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.4.2  # Latest that AWS supports
+    container_name: geo-elasticsearch
+    environment:
+      - cluster.name=docker-cluster
+      # https://www.elastic.co/guide/en/elasticsearch/reference/6.5/_memory_lock_check.html#_memory_lock_check
+      - bootstrap.memory_lock=true  # configure system to disallow swapping
+      # https://www.elastic.co/guide/en/elasticsearch/reference/6.5/heap-size.html#heap-size
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"  # set a small JVM heap size
+      - discovery.type=single-node  # fast spin up for testing with single node.
+    # https://www.elastic.co/guide/en/elasticsearch/reference/6.5/setting-system-settings.html#ulimit
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - esdata:/usr/share/elasticsearch/data
+    ports:
+      - 9200:9200
+    networks:
+      - geo_services
+  kibana:
+    image: docker.elastic.co/kibana/kibana:7.4.2  # Match Elasticsearch version
+    ports:
+      - 5601:5601
+    networks:
+      - geo_services
+networks:
+  geo_services:
+    external: true
+
+volumes:
+  esdata:
+    driver: local
