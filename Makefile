@@ -70,11 +70,8 @@ test: docker-network build
 	docker-compose run --rm -e STAGE=testing api py.test $(t) \
 		--junit-xml=pytest-out.xml --cov=$(code-directory) --cov-report=term-missing
 
-lint: .venv ## Run syntax/style check. Optionally takes a parameter to specify a specific file to check, e.g., make lint f=api/endpoints/general.py
+lint: .venv ## Run syntax/style check.
 	venv/bin/black --line-length=101 --safe -v $(code-directory) $(root-code-files) $(test-directory)
 	venv/bin/flake8 --max-line-length=101 $(code-directory) $(root-code-files) $(test-directory)
 
 code: lint test ## Run both lint and tests
-
-zip: ## Archives this project (require git version control)
-	git archive --prefix carmera-take-home/ --format zip -o take_home.zip HEAD
