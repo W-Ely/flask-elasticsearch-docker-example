@@ -23,7 +23,6 @@ clean: ## clean local assets
 	rm -f pytest-out.xml
 	rm -f supervisord.log
 	rm -f supervisord.pid
-	rm -f take_home.zip
 
 clean-all: clean
 	docker-compose down -v
