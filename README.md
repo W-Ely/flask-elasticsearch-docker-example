@@ -16,7 +16,7 @@ Geo-Search is:
 - proxied by [Nginx](https://nginx.org/en/docs/)
 - controlled by [Supervisor](http://supervisord.org/introduction.html)
 - containerized by [Docker](https://docs.docker.com/engine/)
-- serviced by a [Flask](https://flask.palletsprojects.com/en/1.1.x/) + [Flask-restful](https://flask-restful.readthedocs.io/en/latest/)
+- serviced by [Flask](https://flask.palletsprojects.com/en/1.1.x/) + [Flask-restful](https://flask-restful.readthedocs.io/en/latest/)
 - documented with [Flasgger](https://github.com/flasgger/flasgger) + [Swagger](https://swagger.io/docs/)
 
 ### Dependencies
