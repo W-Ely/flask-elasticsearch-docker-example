@@ -1,4 +1,4 @@
-import certifi
+from elasticsearch import Elasticsearch
 
 from config import CONFIG
 
